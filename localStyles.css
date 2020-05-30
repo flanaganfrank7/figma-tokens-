@@ -1,0 +1,8 @@
+.sect{
+	margin-top: 64px;
+}
+
+#parent-type p{
+	width: 100%;
+	display: block
+}
