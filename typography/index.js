@@ -24,12 +24,14 @@ function createType(){
 
 		var tp = document.createElement("P")
 		tp.style.fontFamily = type[d][0];
+		tp.contentEditable = "true"
 		tp.style.fontSize = type[d][1] + "px";
 		tp.style.fontWeight = type[d][2];
 		tp.style.display = "block";
 		tp.style.lineHeight = type[d][3] + "px";
 		tp.style.letterSpacing = type[d][4];
-		tp.style.marginLeft = "48px";
+		tp.style.marginLeft = "32px";
+		tp.style.marginRight = "32px";
 		tp.innerHTML = "The quick brown fox jumped over the lazy dog."
 		typeBlock.appendChild(tp)
 
@@ -37,6 +39,11 @@ function createType(){
 		// Details
 		var tpDetailsContainer = document.createElement("Div")
 		tpDetailsContainer.className = "typeDetails"
+
+		var tpDetailsName = document.createElement("P")
+		tpDetailsName.innerHTML =  type[d][5]
+		tpDetailsName.className = "typeStyleName"
+		tpDetailsContainer.appendChild(tpDetailsName)
 
 		var tpDetailsFamily = document.createElement("P")
 		tpDetailsFamily.innerHTML = "Font Family: " + type[d][0]
@@ -49,6 +56,10 @@ function createType(){
 		var tpDetailsWeight = document.createElement("P")
 		tpDetailsWeight.innerHTML = "Font Weight: " + type[d][2]
 		tpDetailsContainer.appendChild(tpDetailsWeight)
+
+		var tpDetailsLineHeight = document.createElement("P")
+		tpDetailsLineHeight.innerHTML = "Line Height: " + type[d][3]
+		tpDetailsContainer.appendChild(tpDetailsLineHeight)
 
 		typeBlock.append(tpDetailsContainer)
 
@@ -65,12 +76,16 @@ function displayTypeData(result){
 	console.log(data)
 
 	for (var c=0; c < typography.length; c++){
+
+		
+
 		var font = typography[c].style.fontFamily
 		var fontSize = typography[c].style.fontSize
 		var weight = typography[c].style.fontWeight
 		var lineHeight = typography[c].style.lineHeightPx
+		var name = typography[c].name
 		var letterSpacing = typography[c].style.letterSpacing
-		type.unshift([font, fontSize, weight, lineHeight,letterSpacing])
+		type.unshift([font, fontSize, weight, lineHeight,letterSpacing,name])
 
 	}
 

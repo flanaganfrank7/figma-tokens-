@@ -66,6 +66,15 @@ a:visited{
 
 .typeDetails{
 	background-color: white;
-	padding: 48px;
+	padding: 32px;
 	border-radius: 0 0 15px 15px;
+}
+
+.typeDetails p{
+	line-height: 8px;
+}
+
+.typeStyleName{
+	font-size: 1.3rem;
+	margin-bottom: 32px;
 }

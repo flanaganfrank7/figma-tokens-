@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div id="container">
+
+	</div>
+	
+	
+<script type="text/javascript">
+	var myHeaders = new Headers();
+	var result = {}
+	myHeaders.append("X-Figma-Token", "36981-c06004e8-3127-443a-9964-dda94f5fba4b");
+	var svgArray = []
+
+	var requestOptions = {
+	  method: 'GET',
+	  headers: myHeaders,
+	  redirect: 'follow'
+	};
+
+
+	fetch("https://api.figma.com/v1/files/MpzengDOK6WT1i29pi7UVx/nodes?ids=169%3A2", requestOptions)
+	  .then(response => response.text())
+	  .then(result => parseIcons(result))
+	  .catch(error => console.log('error', error));
+
+
+
+	function parseIcons(result){
+		var parsed = JSON.parse(result)
+		var children = parsed.nodes
+		// need to create a bunch of urls here - 1 for each icon
+		let url = "https://api.figma.com/v1/images/MpzengDOK6WT1i29pi7UVx/?ids=169%3A8&format=png"
+		getIcon(url)
+	}
+
+	function getIcon(url){
+	 	fetch(url, requestOptions)
+		  .then(response => response.text())
+		  // .then(result => console.log(result))
+		  .then(result => storeIcons(result))
+		  .catch(error => console.log('error', error));
+	 }
+
+
+	 function storeIcons(result){
+	 	console.log(result)
+	 	var parsed = JSON.parse(result)
+	 	// var key = 
+	 	var svgSource = (parsed.images["169:8"])
+	 	svgArray.unshift(svgSource)
+	 	renderIcons()	
+	 }
+
+	 function renderIcons(){
+	 	for(let s = 0; s<svgArray.length; s++){
+	 		var icon = document.createElement("Img")
+	 		icon.src=svgArray[s]
+	 		var container = document.getElementById("container")
+	 		container.append(icon)
+	 	}
+	 }
+
+</script>	
+</body>
+</html>
+
+
+<!-- https://api.figma.com/v1/images/B1v7c2kZ8EnvF3tLlxmT69/?ids=:icon_node_id&format=svg -->
+<!-- https://api.figma.com/zwv1/images/B1v7c2kZ8EnvF3tLlxmT69/?ids=19%3A31&format=svg -->
+<!-- https://api.figma.com/v1/images/MpzengDOK6WT1i29pi7UVx/?ids=169%3A8&format=svg -->
+
+<!-- 169%3A8 -->
