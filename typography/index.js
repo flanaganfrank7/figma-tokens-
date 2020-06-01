@@ -8,33 +8,20 @@ var requestOptions = {
 };
 
 var data;
-var colors = []
 var type = []
 var cdiv = parent.document.createElement("div")
-var containerColor = document.getElementById("parent-color")
 var containerType = document.getElementById("parent-type")
 
 
-function createColors(){
-	for(var b=0; b<colors.length; b++){
-		var cdiv = document.createElement("div")
-		cdiv.className = "colorRow";
-		cdiv.style.width = "100%";
-		cdiv.style.height = "200px";
-		cdiv.style.borderRadius = "15px";
-		cdiv.style.display = "inline-block";
-		cdiv.style.margin = "0 32px 32px 0";
-		cdiv.style.padding = "0";
-		// cdiv.style.borderBottom = "1px solid black";
-		var rgb = "rgb(" + colors[b][0]*255 + "," + colors[b][1]*255 + "," + colors[b][2]*255 + ")"
-		cdiv.style.background = rgb;
-		containerColor.appendChild(cdiv)
-	}
-}
+
 
 function createType(){
 	
 	for(var d=0; d<type.length; d++){
+
+		var typeBlock = document.createElement("Div")
+		typeBlock.className = "typeBlock"
+
 		var tp = document.createElement("P")
 		tp.style.fontFamily = type[d][0];
 		tp.style.fontSize = type[d][1] + "px";
@@ -42,8 +29,31 @@ function createType(){
 		tp.style.display = "block";
 		tp.style.lineHeight = type[d][3] + "px";
 		tp.style.letterSpacing = type[d][4];
+		tp.style.marginLeft = "48px";
 		tp.innerHTML = "The quick brown fox jumped over the lazy dog."
-		containerType.appendChild(tp)
+		typeBlock.appendChild(tp)
+
+
+		// Details
+		var tpDetailsContainer = document.createElement("Div")
+		tpDetailsContainer.className = "typeDetails"
+
+		var tpDetailsFamily = document.createElement("P")
+		tpDetailsFamily.innerHTML = "Font Family: " + type[d][0]
+		tpDetailsContainer.appendChild(tpDetailsFamily)
+
+		var tpDetailsSize = document.createElement("P")
+		tpDetailsSize.innerHTML = "Font Size: " + type[d][1] + "px"
+		tpDetailsContainer.appendChild(tpDetailsSize)
+
+		var tpDetailsWeight = document.createElement("P")
+		tpDetailsWeight.innerHTML = "Font Weight: " + type[d][2]
+		tpDetailsContainer.appendChild(tpDetailsWeight)
+
+		typeBlock.append(tpDetailsContainer)
+
+		containerType.append(typeBlock)
+
 	}
 	console.log('hi')
 }
@@ -64,32 +74,9 @@ function displayTypeData(result){
 
 	}
 
-	displayColorData(result)
+	
 	createType()
 }
-
-
-function displayColorData(result){
-	
-	var data = JSON.parse(result).nodes
-	var current = data["0:1"].document.children[0].children
-	console.log(current)
-	var typography = data["0:1"].document.children[1].children
-	console.log(typography)
-	
-	for(var i=0; i < current.length; i++){
-		let childR = current[i].fills[0].color.r
-		let childG = current[i].fills[0].color.g
-		let childB = current[i].fills[0].color.b
-		colors.unshift([childR, childG, childB])
-
-	}
-
-	createColors()
-}
-
-
-
 
 
 fetch("https://api.figma.com/v1/files/MpzengDOK6WT1i29pi7UVx/nodes?ids=0%3A1", requestOptions)

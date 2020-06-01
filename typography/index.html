@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<title>Figma Tokens</title>
 	<!-- Local Styles -->
-	<link rel="stylesheet" type="text/css" href="localStyles.css">
+	<link rel="stylesheet" type="text/css" href="/localStyles.css">
 	<!-- jQuery -->
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
@@ -13,14 +13,14 @@
 	<div class="container">
 		<div class="sidebar">
 			<ul class="navigation">
-				<li class="active">About</li>
+				<li><a href="/">About</a></li>
 				<li><a href="/icons">Iconography</a></li>
-				<li><a href="/typography">Typography</a></li>
-				<li><a href="/colors">Color</a></li>
+				<li>Typography</li>
+				<li class="active"><a href="/colors">Color</a></li>
 			</ul>
 		</div>
 		<div class="main">
-			About this project	| <a href="https://www.figma.com/file/MpzengDOK6WT1i29pi7UVx/Built-with-Figma?node-id=0%3A1" target="_blank">Figma File</a>
+			<div class="row col-*" id="parent-type"></div>		
 		</div>
 	</div>
 </body>
