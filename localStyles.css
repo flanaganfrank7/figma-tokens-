@@ -78,3 +78,36 @@ a:visited{
 	font-size: 1.3rem;
 	margin-bottom: 32px;
 }
+
+/* Iconography Page */
+
+#parent-icons{
+	visibility: hidden;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	-ms-box-orient: horizontal;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -moz-flex;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	flex-wrap: wrap;
+}
+
+.icons-block-parent{
+	min-width: 224px;
+	height: 128px;
+	border: 2px solid #EDEDED;
+	border-radius: 15px;
+	margin: 0 24px 24px 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+
+
+
