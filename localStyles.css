@@ -110,6 +110,21 @@ a:visited{
 
 
 
+.iconName{
+	visibility: hidden;
+	display: none;
+	color: blue;
+	text-align: center;
+}
+
+.icons-block-parent:hover .iconName{
+	visibility: visible;
+	display: inline;
+}
+.icons-block-parent:hover .icon{
+	display: none;
+}
+
 
 #parent-color{
 	padding: 0;

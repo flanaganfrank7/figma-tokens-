@@ -75,18 +75,32 @@ function renderIcons(name, path){
         var icon = document.createElement("Img")
         var iconBlock = document.createElement("Div")
         var iconBlockParent = document.createElement("Div")
+        var iconName = document.createElement("P")
+        var iconDownloadWrapper= document.createElement("A")
+
+        iconName.innerHTML = name
+        iconName.className = "iconName"
+
+        iconDownloadWrapper.href = path
+        iconDownloadWrapper.download = name + ".svg"
+        iconDownloadWrapper.target = "_blank"
 
         iconBlock.className = "icons-block"
         iconBlockParent.className = "icons-block-parent"
 
         icon.src=path
+        icon.className = "icon"
 
         var container = document.getElementById("parent-icons")
         var placeholderContainer = document.getElementById("parent-icons-placeholder")
 
         iconBlock.append(icon)
+        iconBlock.append(iconName)
         iconBlockParent.append(iconBlock)
-        container.append(iconBlockParent)
+        iconDownloadWrapper.append(iconBlockParent)
+        container.append(iconDownloadWrapper)
+
+
         container.style.visibility = "visible"
         placeholderContainer.style.visibility = "hidden"
     
