@@ -1,68 +1,93 @@
 var myHeaders = new Headers();
 	var result = {}
 	myHeaders.append("X-Figma-Token", "36981-c06004e8-3127-443a-9964-dda94f5fba4b");
-	var svgArray = []
+	
+var requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
+};
 
-	var requestOptions = {
-	  method: 'GET',
-	  headers: myHeaders,
-	  redirect: 'follow'
-	};
+var iconDetails = []
+var svgArray = []
 
+// Step 1
+// Make the initial call the files endpoint 
+fetch("https://api.figma.com/v1/files/MpzengDOK6WT1i29pi7UVx/nodes?ids=169%3A2", requestOptions)
+    .then(response => response.text())
+    .then(result => parseIcons(result))
+    .catch(error => console.log('error', error));
 
-	fetch("https://api.figma.com/v1/files/MpzengDOK6WT1i29pi7UVx/nodes?ids=169%3A2", requestOptions)
-	  .then(response => response.text())
-	  .then(result => parseIcons(result))
-	  .catch(error => console.log('error', error));
-
-
-
-	function parseIcons(result){
-		var parsed = JSON.parse(result)
-		var children = parsed.nodes
-        console.log(children)
-		// need to create a bunch of urls here - 1 for each icon
-		// let url = "https://api.figma.com/v1/images/MpzengDOK6WT1i29pi7UVx/?ids=169%3A8&format=png"
-        let encodedId = encodeURI("170:0")
-        let url = `https://api.figma.com/v1/images/MpzengDOK6WT1i29pi7UVx/?ids=${encodedId}&format=png`
-		getIcon(url)
-	}
-
-	function getIcon(url){
-	 	fetch(url, requestOptions)
-		  .then(response => response.text())
-		  // .then(result => console.log(result))
-		  .then(result => storeIcons(result))
-		  .catch(error => console.log('error', error));
-	 }
+// Step 2
+// Here we start to parse through the initial call
+function parseIcons(result){
+    var parsed = JSON.parse(result)
+    var children = parsed.nodes
+    var drill = children["169:2"].document.children[0].children
+    
 
 
-	 function storeIcons(result){
-	 	console.log(result)
-	 	var parsed = JSON.parse(result)
-	 	var svgSource = (parsed.images["170:0"])
-	 	svgArray.unshift(svgSource)
-	 	renderIcons()	
-	 }
+    // HERE HERE
 
-	 function renderIcons(){
-	 	for(let s = 0; s<svgArray.length; s++){
-	 		var icon = document.createElement("Img")
-            var iconBlock = document.createElement("Div")
-            var iconBlockParent = document.createElement("Div")
+    // Need to store both the image url + the name + the svg url
 
-            iconBlock.className = "icons-block"
-            iconBlockParent.className = "icons-block-parent"
 
-	 		icon.src=svgArray[s]
+    // Get a url for each item in drill
+    for (let i = 0; i < drill.length; i++){
+        let rawID = drill[i].id
+        let iconName = drill[i].name
+        let encodedId = encodeURI(rawID)    
+        let pngUrl = `https://api.figma.com/v1/images/MpzengDOK6WT1i29pi7UVx/?ids=${encodedId}&format=png`
+        let svgUrl = `https://api.figma.com/v1/images/MpzengDOK6WT1i29pi7UVx/?ids=${encodedId}&format=svg`
+        let iconObject = {"name": iconName, "png": pngUrl, "svg": svgUrl}
+        iconDetails.unshift(iconObject)
+    }
+    // console.log(iconDetails)
+    getIcon()
+}
 
-	 		var container = document.getElementById("parent-icons")
-            var placeholderContainer = document.getElementById("parent-icons-placeholder")
+// Step 3
+// Here we make a call to the images endpoint to get the icon
+function getIcon(){
+    for (let i = 0; i < iconDetails.length; i++){
+        let url = iconDetails[i].svg
+        
+        fetch(url, requestOptions,svgArray)
+            .then(response => response.text())
+            .then(result => Object.entries(JSON.parse(result).images))
+            .then(entries => entries[0][1])
+            .then(assetUrl => ({"name": iconDetails[i].name, "path": assetUrl}))
+            .then(finalObject => renderIcons(finalObject.name, finalObject.path))
+            .catch(error => console.log('error', error));
+        
+    }
+    console.log('here')
 
-            iconBlock.append(icon)
-            iconBlockParent.append(iconBlock)
-	 		container.append(iconBlockParent)
-            container.style.visibility = "visible"
-            placeholderContainer.style.visibility = "hidden"
-	 	}
-	 }
+    }
+
+
+// Step 5
+//  Here we loop through the array of stored icons and render them to the page 
+function renderIcons(name, path){
+    
+    // for(let s = 0; s<svgArray.length; s++){
+        
+        var icon = document.createElement("Img")
+        var iconBlock = document.createElement("Div")
+        var iconBlockParent = document.createElement("Div")
+
+        iconBlock.className = "icons-block"
+        iconBlockParent.className = "icons-block-parent"
+
+        icon.src=path
+
+        var container = document.getElementById("parent-icons")
+        var placeholderContainer = document.getElementById("parent-icons-placeholder")
+
+        iconBlock.append(icon)
+        iconBlockParent.append(iconBlock)
+        container.append(iconBlockParent)
+        container.style.visibility = "visible"
+        placeholderContainer.style.visibility = "hidden"
+    
+    }

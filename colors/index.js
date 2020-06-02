@@ -18,15 +18,28 @@ var containerColor = document.getElementById("parent-color")
 function createColors(){
 	for(var b=0; b<colors.length; b++){
 		var cdiv = document.createElement("div")
-		cdiv.className = "colorRow";
-		// cdiv.style.width = "100%";
-		cdiv.style.height = "200px";
-		// cdiv.style.margin = "1px";
+		cdiv.className = "colors-block-parent"
+		var cdetails = document.createElement("div")
+		cdetails.className = "colors-block-details"
+		var cName = document.createElement("P")
+		var cValue = document.createElement("P")
+
+		// cdiv.className = "colorRow";
+
 		cdiv.style.borderRadius = "15px";
 		cdiv.style.display = "inline-block";
 		cdiv.style.padding = "0";
 		var rgb = "rgb(" + colors[b][0]*255 + "," + colors[b][1]*255 + "," + colors[b][2]*255 + ")"
 		cdiv.style.background = rgb;
+		
+		cName.innerHTML = colors[b][3]
+		cValue.innerHTML = "R: " + Math.floor(colors[b][0]*255) + " G: " + Math.floor(colors[b][1]*255) + " B: " + Math.floor(colors[b][2]*255)
+
+
+		cdetails.style.background = "#fff"
+		cdetails.append(cName)
+		cdetails.append(cValue)
+		cdiv.append(cdetails)
 		containerColor.appendChild(cdiv)
 	}
 }
@@ -37,14 +50,14 @@ function displayColorData(result){
 	var data = JSON.parse(result).nodes
 	var current = data["0:1"].document.children[0].children
 	console.log(current)
-	// var typography = data["0:1"].document.children[1].children
-	// console.log(typography)
+	
 	
 	for(var i=0; i < current.length; i++){
 		let childR = current[i].fills[0].color.r
 		let childG = current[i].fills[0].color.g
 		let childB = current[i].fills[0].color.b
-		colors.unshift([childR, childG, childB])
+		let colorName = current[i].name
+		colors.unshift([childR, childG, childB, colorName])
 
 	}
 
